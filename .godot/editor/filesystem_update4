@@ -1,0 +1,14 @@
+res://Main.tscn
+res://GridTest.gd
+res://main.tscn
+res://OctoagonGrid.gd
+res://DemoScene.gd
+res://HexGrid.gd
+res://HexRenderer.gd
+res://HexTile.gd
+res://HexPathfinding.gd
+res://CameraController.gd
+res://GameManager.gd
+res://GridSystem/HexRenderer.gd
+res://GridSystem/HexGrid.gd
+res://GridSystem/HexTile.gd
