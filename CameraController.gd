@@ -79,5 +79,5 @@ func detect_hex():
 	
 	if hex_grid.has_hex(hex_coord):
 		var hex_tile = hex_grid.get_hex(hex_coord)
-		print("Clicked: ", hex_tile.get_info())
-		hex_clicked.emit(hex_coord)
+		print("Clicked: ", hex_tile.get_resource_info())
+		hex_clicked.emit(hex_coord, world_pos)

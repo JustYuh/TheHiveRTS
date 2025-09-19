@@ -12,3 +12,6 @@ res://GameManager.gd
 res://GridSystem/HexRenderer.gd
 res://GridSystem/HexGrid.gd
 res://GridSystem/HexTile.gd
+res://Resource/ResourceType.gd
+res://Resource/ResourceSpawner.gd
+res://HoverInfoManager.gd
