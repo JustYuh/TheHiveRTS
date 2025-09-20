@@ -75,3 +75,11 @@ func get_hex(hex_coord: Vector2) -> HexTile:
 
 func get_all_hexes() -> Array:
 	return grid_data.keys()
+
+func get_neighbors(hex_coord: Vector2) -> Array:
+	var neighbors = []
+	for direction in HEX_DIRECTIONS:
+		var neighbor_coord = hex_coord + direction
+		if has_hex(neighbor_coord):
+			neighbors.append(neighbor_coord)
+	return neighbors

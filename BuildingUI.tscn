@@ -1,0 +1,130 @@
+[gd_scene load_steps=2 format=3 uid="uid://bltkv3m9s6xnd"]
+
+[ext_resource type="Script" path="res://BuildingUI.gd" id="1_8h2lq"]
+
+[node name="BuildingUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource("1_8h2lq")
+
+[node name="TopBar" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 40.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TopBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 5.0
+offset_right = -10.0
+offset_bottom = -5.0
+
+[node name="BuildMenuBtn" type="Button" parent="TopBar/HBoxContainer"]
+layout_mode = 2
+text = "🏗 BUILD MENU"
+custom_minimum_size = Vector2(120, 30)
+
+[node name="VSeparator" type="VSeparator" parent="TopBar/HBoxContainer"]
+layout_mode = 2
+
+[node name="ModeLabel" type="Label" parent="TopBar/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "MODE: INSPECT"
+vertical_alignment = 1
+
+[node name="VSeparator2" type="VSeparator" parent="TopBar/HBoxContainer"]
+layout_mode = 2
+
+[node name="ResourceContainer" type="HBoxContainer" parent="TopBar/HBoxContainer"]
+layout_mode = 2
+
+[node name="EnergyLabel" type="Label" parent="TopBar/HBoxContainer/ResourceContainer"]
+layout_mode = 2
+text = "⚡200"
+vertical_alignment = 1
+
+[node name="VSeparator3" type="VSeparator" parent="TopBar/HBoxContainer/ResourceContainer"]
+layout_mode = 2
+
+[node name="MaterialsLabel" type="Label" parent="TopBar/HBoxContainer/ResourceContainer"]
+layout_mode = 2
+text = "⚙100"
+vertical_alignment = 1
+
+[node name="VSeparator4" type="VSeparator" parent="TopBar/HBoxContainer/ResourceContainer"]
+layout_mode = 2
+
+[node name="SilicaLabel" type="Label" parent="TopBar/HBoxContainer/ResourceContainer"]
+layout_mode = 2
+text = "🟫200"
+vertical_alignment = 1
+
+[node name="VSeparator5" type="VSeparator" parent="TopBar/HBoxContainer/ResourceContainer"]
+layout_mode = 2
+
+[node name="SteelLabel" type="Label" parent="TopBar/HBoxContainer/ResourceContainer"]
+layout_mode = 2
+text = "⚒150"
+vertical_alignment = 1
+
+[node name="DropdownPanel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 40.0
+offset_bottom = 40.0
+visible = false
+
+[node name="Content" type="VBoxContainer" parent="DropdownPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 15.0
+offset_top = 15.0
+offset_right = -15.0
+offset_bottom = -15.0
+
+[node name="BuildingRow" type="HBoxContainer" parent="DropdownPanel/Content"]
+layout_mode = 2
+
+[node name="EnergyExtractorBtn" type="Button" parent="DropdownPanel/Content/BuildingRow"]
+layout_mode = 2
+text = "⚡ Energy Extractor"
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 40)
+
+[node name="MaterialProcessorBtn" type="Button" parent="DropdownPanel/Content/BuildingRow"]
+layout_mode = 2
+text = "⚙ Material Processor"
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 40)
+
+[node name="ColonyHubBtn" type="Button" parent="DropdownPanel/Content/BuildingRow"]
+layout_mode = 2
+text = "🏠 Colony Hub"
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 40)
+
+[node name="CancelBtn" type="Button" parent="DropdownPanel/Content/BuildingRow"]
+layout_mode = 2
+text = "❌ Cancel"
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 40)
+
+[node name="HSeparator" type="HSeparator" parent="DropdownPanel/Content"]
+layout_mode = 2
+
+[node name="StatusLabel" type="Label" parent="DropdownPanel/Content"]
+layout_mode = 2
+text = "Click a building type above, then click a compatible hex to place"
+horizontal_alignment = 1
+autowrap_mode = 2

@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://cann5fkfo75lc"]
+
+[ext_resource type="Script" uid="uid://b2ge0dcux3nib" path="res://Building/Building.gd" id="1_e37n3"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_v8dyh"]
+specular_color = Color(0.26406595, 0.3197173, 0.419276, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pe7t1"]
+size = Vector2(16, 16)
+
+[node name="Building" type="Node2D"]
+script = ExtResource("1_e37n3")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+scale = Vector2(16, 16)
+texture = SubResource("CanvasTexture_v8dyh")
+
+[node name="ClickArea" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_pe7t1")
+
+[node name="CollectionTimer" type="Timer" parent="."]
+
+[node name="UI_Info" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0

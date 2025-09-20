@@ -9,6 +9,9 @@ var hex_renderer: HexRenderer
 var camera_controller: CameraController
 var resource_spawner: ResourceSpawner
 var hover_info_manager: HoverInfoManager  # NEW: Dedicated UI manager
+var building_manager: BuildingManager     # NEW: Building system for v0.3
+var building_ui: BuildingUI               # NEW: Building UI for v0.3
+var input_manager: InputManager           # NEW: Centralized input handling for v0.3
 
 # Configuration
 @export var grid_radius: int = 12
@@ -23,12 +26,13 @@ var resource_statistics: Dictionary = {}
 @export var show_debug_info: bool = false
 
 func _ready():
-	print("GameManager: Initializing v0.2 'Resources' with clean architecture...")
+	print("GameManager: Initializing v0.3 'First Buildings' with clean architecture...")
 	_setup_core_systems()
 	_setup_resource_system()
-	_setup_ui_systems()  # NEW: Separate UI setup
+	_setup_ui_systems()     # NEW: Separate UI setup
+	_setup_building_system()  # NEW: Building system for v0.3
 	_setup_connections()
-	print("GameManager: v0.2 initialization complete!")
+	print("GameManager: v0.3 initialization complete!")
 
 func _setup_core_systems():
 	# Initialize hex grid
@@ -76,9 +80,57 @@ func _setup_ui_systems():
 	hover_info_manager.setup(hex_grid, camera_controller)
 	print("GameManager: UI systems initialized")
 
+func _setup_building_system():
+	# Get reference to BuildingUI that's already in the scene (now in UILayer)
+	building_ui = get_node("../UILayer/BuildingUI")
+	if not building_ui:
+		print("ERROR: Could not find BuildingUI node in UILayer")
+		return
+
+	# Create input manager
+	input_manager = InputManager.new()
+	input_manager.name = "InputManager"
+	add_child(input_manager)
+
+	# Create building manager
+	building_manager = BuildingManager.new()
+	building_manager.name = "BuildingManager"
+	add_child(building_manager)
+
+	# Setup connections between systems (InputManager coordinates everything)
+	input_manager.setup(hex_grid, camera_controller, building_manager, building_ui)
+	building_manager.setup(hex_grid, camera_controller, building_ui, input_manager)
+	building_ui.setup(building_manager)
+
+	# Give players some starting resources for testing
+	building_ui.add_resource("silica", 200)
+	building_ui.add_resource("steel", 150)
+	building_ui.add_resource("crystal", 50)
+	building_ui.add_resource("materials", 100)
+
+	print("GameManager: Building system with InputManager initialized")
+
 func _setup_connections():
-	# Connect input handling for resource inspection
-	camera_controller.hex_clicked.connect(_on_hex_clicked)
+	# Connect input handling for resource inspection (now handled by InputManager)
+	if input_manager:
+		input_manager.hex_clicked.connect(_on_hex_clicked)
+
+	# Connect building system if available
+	if building_manager:
+		building_manager.building_placed.connect(_on_building_placed)
+		building_manager.resources_updated.connect(_on_resources_updated)
+		print("GameManager: Building system signals connected")
+
+	# Update hover info manager to include building info
+	if hover_info_manager and building_manager:
+		hover_info_manager.set_building_manager(building_manager)
+		print("GameManager: Hover info updated with building manager")
+
+func _on_building_placed(building: Building):
+	print("GameManager: New building placed: %s at %s" % [building.building_name, building.hex_position])
+
+func _on_resources_updated(resource_type: String, amount: float):
+	print("GameManager: Resource collected: %.1f %s" % [amount, resource_type])
 
 func _print_resource_stats():
 	print("=== RESOURCE DISTRIBUTION STATISTICS ===")
@@ -196,6 +248,10 @@ func _input(event):
 				_print_resource_stats()
 			KEY_A:
 				_analyze_resource_patterns()
+			KEY_B:
+				_list_buildings()
+			KEY_U:
+				_toggle_ui_visibility()
 
 func _regenerate_resources():
 	print("GameManager: Regenerating resources with new seed...")
@@ -360,3 +416,13 @@ func _get_neighbors_fallback(hex_coord: Vector2) -> Array:
 			neighbors.append(neighbor_coord)
 	
 	return neighbors
+
+func _list_buildings():
+	if building_manager:
+		building_manager.list_all_buildings()
+
+func _toggle_ui_visibility():
+	if building_ui:
+		building_ui.visible = !building_ui.visible
+		var status = "visible" if building_ui.visible else "hidden"
+		print("GameManager: Building UI window is now ", status)

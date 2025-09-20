@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://b5y8qwn5m4xkl"]
+
+[ext_resource type="Script" path="res://Building/EnergyExtractor.gd" id="1_1r2vf"]
+[ext_resource type="Texture2D" path="res://icon.svg" id="2_h5c8m"]
+
+[node name="EnergyExtractor" type="Node2D"]
+script = ExtResource("1_1r2vf")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_h5c8m")
+scale = Vector2(0.3, 0.3)
+modulate = Color(1, 1, 0, 1)
+
+[node name="CollectionArea" type="Node2D" parent="."]
+
+[node name="Label" type="Label" parent="."]
+offset_left = -25.0
+offset_top = 20.0
+offset_right = 25.0
+offset_bottom = 35.0
+text = "Energy"
+horizontal_alignment = 1

@@ -6,6 +6,7 @@ extends Node
 # References to game systems
 var hex_grid: HexGrid
 var camera_controller: CameraController
+var building_manager: Node
 
 # Hover info box system
 var hover_info_box: Control
@@ -27,6 +28,11 @@ func setup(p_hex_grid: HexGrid, p_camera: CameraController):
 	hex_grid = p_hex_grid
 	camera_controller = p_camera
 	print("HoverInfoManager: Setup complete")
+
+func set_building_manager(p_building_manager: Node):
+	"""Set the building manager for building info display"""
+	building_manager = p_building_manager
+	print("HoverInfoManager: Building manager set")
 
 func _setup_hover_system():
 	"""Create the hover UI components"""
@@ -194,41 +200,70 @@ func _clamp_info_box_to_screen(box_size: Vector2 = info_box_size):
 func _generate_hover_text(hex_tile: HexTile) -> String:
 	"""Generate the rich text content for the hover box"""
 	var text = ""
-	
+
 	# Hex coordinates
 	text += "[color=cyan]Hex (%d, %d)[/color]\n" % [hex_tile.hex_coord.x, hex_tile.hex_coord.y]
-	
+
+	# Check for buildings first
+	var building = _get_building_at_hex(hex_tile.hex_coord)
+	if building:
+		text += "\n[color=orange]🏗 BUILDING[/color]\n"
+		text += "[color=lime][b]%s[/b][/color]\n" % building.building_name
+		text += "Health: [color=green]%.0f/%.0f[/color]\n" % [building.health, building.max_health]
+
+		# Building production info
+		if not building.resource_production.is_empty():
+			text += "Production:\n"
+			for resource_type in building.resource_production.keys():
+				var amount = building.resource_production[resource_type] * 20  # Convert to per-minute
+				text += "  [color=yellow]%.1f %s/min[/color]\n" % [amount, resource_type]
+
+		text += "\n"
+
+	# Resource information
 	if hex_tile.has_resource:
 		var resource = hex_tile.get_resource()
 		var data = hex_tile.resource_data
-		
+
+		text += "[color=cyan]⛏ RESOURCE[/color]\n"
 		# Resource name with color coding
 		var resource_color = _get_resource_color(resource.type)
 		text += "[color=%s][b]%s[/b][/color]\n" % [resource_color, resource.name]
 		text += "[color=yellow]%s[/color]\n\n" % _get_rarity_description(resource.rarity)
-		
+
 		# Resource stats with color coding
 		if data.has("purity"):
 			var purity_color = _get_purity_color(data.purity)
 			text += "[color=%s]Purity: %.1f%%[/color]\n" % [purity_color, data.purity]
-		
+
 		if data.has("yield"):
 			text += "Yield: [color=cyan]%.1f/hr[/color]\n" % data.yield
-		
+
 		if data.has("risk_factor"):
 			var risk_color = _get_risk_color(data.risk_factor)
 			text += "[color=%s]Risk: %.0f%%[/color]\n" % [risk_color, data.risk_factor * 100]
-		
+
 		# Strategic value
 		var strategic_value = hex_tile.calculate_strategic_value()
 		var value_color = _get_value_color(strategic_value)
 		text += "[color=%s]Value: %.0f[/color]" % [value_color, strategic_value]
-		
+
 	else:
 		text += "[color=gray][i]Empty Hex[/i][/color]\n"
 		text += "No resources detected"
-	
+
 	return text
+
+func _get_building_at_hex(hex_coord: Vector2) -> Building:
+	"""Get the building at the specified hex coordinate"""
+	if not building_manager:
+		return null
+
+	# Check if BuildingManager has a method to get building at hex
+	if building_manager.has_method("get_building_at_hex"):
+		return building_manager.get_building_at_hex(hex_coord)
+
+	return null
 
 func _get_resource_color(resource_type: ResourceType.Type) -> String:
 	"""Get the display color for a resource type"""

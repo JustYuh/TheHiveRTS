@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://d2k5l7n8qaqrs"]
+
+[ext_resource type="Script" path="res://Building/ColonyHub.gd" id="1_v6w2x"]
+[ext_resource type="Texture2D" path="res://icon.svg" id="2_k8m3p"]
+
+[node name="ColonyHub" type="Node2D"]
+script = ExtResource("1_v6w2x")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_k8m3p")
+scale = Vector2(0.6, 0.6)
+
+[node name="CollectionArea" type="Node2D" parent="."]
+
+[node name="Label" type="Label" parent="."]
+offset_left = -25.0
+offset_top = 25.0
+offset_right = 25.0
+offset_bottom = 40.0
+text = "Hub"
+horizontal_alignment = 1

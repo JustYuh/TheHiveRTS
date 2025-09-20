@@ -1,4 +1,10 @@
+Label
+Panel
+Button
+Control
+Timer
+CollisionShape2D
+Sprite2D
 Camera2D
 Node2D
 ColorRect
-Sprite2D

@@ -10,7 +10,7 @@ var is_panning: bool = false
 var last_mouse_pos: Vector2
 var hex_grid: HexGrid
 
-signal hex_clicked(hex_coord: Vector2)
+signal hex_clicked(hex_coord: Vector2, world_position: Vector2)
 
 func _ready():
 	make_current()
@@ -29,9 +29,8 @@ func _input(event):
 				start_pan(event.position)
 			else:
 				stop_pan()
-		elif event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-			detect_hex()
-	
+		# Left click is now handled by InputManager, not here
+
 	elif event is InputEventMouseMotion and is_panning:
 		pan_camera(event.position)
 
@@ -70,14 +69,4 @@ func reset_camera():
 	global_position = Vector2.ZERO
 	zoom = Vector2.ONE
 
-func detect_hex():
-	if not hex_grid:
-		return
-	
-	var world_pos = get_global_mouse_position()
-	var hex_coord = hex_grid.world_to_axial(world_pos)
-	
-	if hex_grid.has_hex(hex_coord):
-		var hex_tile = hex_grid.get_hex(hex_coord)
-		print("Clicked: ", hex_tile.get_resource_info())
-		hex_clicked.emit(hex_coord, world_pos)
+# detect_hex() function removed - now handled by InputManager

@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://cq3f7iax2m8pn"]
+
+[ext_resource type="Script" path="res://Building/MaterialProcessor.gd" id="1_8k2lm"]
+[ext_resource type="Texture2D" path="res://icon.svg" id="2_x9n4t"]
+
+[node name="MaterialProcessor" type="Node2D"]
+script = ExtResource("1_8k2lm")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_x9n4t")
+scale = Vector2(0.4, 0.4)
+modulate = Color(0, 1, 1, 1)
+
+[node name="CollectionArea" type="Node2D" parent="."]
+
+[node name="Label" type="Label" parent="."]
+offset_left = -30.0
+offset_top = 20.0
+offset_right = 30.0
+offset_bottom = 35.0
+text = "Materials"
+horizontal_alignment = 1
